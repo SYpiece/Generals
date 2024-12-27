@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainSceneController">
+   <children>
+      <StackPane fx:id="mainPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #222222;">
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="800.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="100.0" style="-fx-font-weight: bold; -fx-font-size: 80;" text="generals.io" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                     <effect>
+                        <DropShadow blurType="ONE_PASS_BOX" color="TEAL" height="0.0" offsetX="2.0" offsetY="2.0" radius="0.0" width="0.0" />
+                     </effect>
+                  </Label>
+                  <TextField alignment="CENTER" prefHeight="40.0" prefWidth="400.0" promptText="Anonynous" style="-fx-font-size: 20; -fx-text-fill: teal;" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="240.0" />
+                  <Button fx:id="playButton" alignment="CENTER" mnemonicParsing="false" onAction="#onPlayButtonClicked" prefHeight="70.0" prefWidth="200.0" style="-fx-font-size: 40;" styleClass="buttonA" text="PLAY" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="300.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+      <StackPane fx:id="roomPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onRoomPaneClicked" style="-fx-background-color: #00000080;" visible="false">
+         <children>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#onUnwantedEvent" prefHeight="220.0" prefWidth="400.0" style="-fx-background-color: white;" StackPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="joinButton" onAction="#onJoinButtonClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-font-size: 25;" styleClass="buttonB" text="Join">
+                     <VBox.margin>
+                        <Insets left="100.0" top="30.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="400.0" style="-fx-font-size: 15;" text="Play in the same room with some friends.">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Button fx:id="createButton" onAction="#onCreateButtonClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-font-size: 25;" styleClass="buttonB" text="Create">
+                     <VBox.margin>
+                        <Insets left="100.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="400.0" style="-fx-font-size: 15;" text="Create a room and wait for someone.">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <effect>
+                  <DropShadow blurType="ONE_PASS_BOX" color="TEAL" height="1.0" offsetX="2.0" offsetY="2.0" radius="0.0" width="0.0" />
+               </effect>
+            </VBox>
+         </children>
+      </StackPane>
+   </children>
+</StackPane>

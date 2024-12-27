@@ -1,0 +1,51 @@
+@font-face {
+    font-family: quicksand;
+    src: url('/font/Quicksand-Regular.otf');
+}
+@font-face {
+    font-family: quicksand;
+    src: url('/font/Quicksand-Bold.otf');
+}
+* {
+    -fx-font-family: quicksand;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0, 0, 0, 0;
+}
+
+.buttonA {
+    -fx-background-color: white;
+    -fx-text-fill: teal;
+    -fx-effect: dropshadow(one-pass-box, teal, 0, 0, 2, 2);
+}
+.buttonA:hover {
+    -fx-background-color: #bbb;
+    -fx-text-fill: teal;
+    -fx-effect: dropshadow(one-pass-box, teal, 0, 0, 3, 3);
+}
+.buttonA:selected {
+    -fx-background-color: teal;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(one-pass-box, teal, 0, 0, 2, 2);
+}
+.buttonB {
+    -fx-background-color: teal;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(one-pass-box, black, 0, 0, 2, 2);
+}
+.buttonB:hover {
+    -fx-background-color: #006e6e;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(one-pass-box, black, 0, 0, 3, 3);
+}
+.buttonC {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+.buttonC:hover {
+    -fx-background-color: #bbb;
+    -fx-text-fill: black;
+}
+.buttonC:selected {
+    -fx-background-color: teal;
+    -fx-text-fill: white;
+}

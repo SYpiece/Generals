@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.embed.swing.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="_rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #222;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GameSceneController">
+   <children>
+      <VBox prefWidth="220.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: rgba(0,0,0,0.5);">
+               <children>
+                  <Label style="-fx-font-size: 14;" text="Communicate Message A." textFill="WHITE" />
+                  <Label style="-fx-font-size: 14;" text="Communicate Message B." textFill="WHITE" />
+               </children>
+            </VBox>
+            <TextField maxHeight="-Infinity" prefHeight="30.0" promptText="Press [Enter] to chat." style="-fx-font-size: 11;" />
+         </children>
+      </VBox>
+      <Label maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-font-size: 16; -fx-background-color: white;" text="Turn 12" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <DropShadow blurType="ONE_PASS_BOX" color="TEAL" height="0.0" offsetX="2.0" offsetY="2.0" radius="0.0" width="0.0" />
+         </effect>
+         <padding>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+         </padding>
+      </Label>
+      <TableView maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: white;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <columns>
+            <TableColumn editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="-1.0" sortable="false" text="★ " />
+            <TableColumn editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="-1.0" sortable="false" text="Player" />
+            <TableColumn editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="-1.0" sortable="false" text="Army" />
+            <TableColumn editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="-1.0" sortable="false" text="Land" />
+         </columns>
+      </TableView>
+   </children>
+</AnchorPane>
