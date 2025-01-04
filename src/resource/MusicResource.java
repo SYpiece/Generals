@@ -1,4 +1,4 @@
-package resource.music;
+package resource;
 
 import java.io.IOException;
 import java.net.URL;
@@ -8,7 +8,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public final class MusicResource {
+public final class MusicResource extends Resource {
     private static final Clip _clip = getCilp();
     public static final String gongMusicName = "gong.wav";
     public static final URL gongMusicURL = MusicResource.class.getResource(gongMusicName);

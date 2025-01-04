@@ -2,7 +2,10 @@ package resource;
 
 import model.User;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 
 public final class FileResource extends Resource {
@@ -43,7 +46,6 @@ public final class FileResource extends Resource {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
     private FileResource() {}
 }

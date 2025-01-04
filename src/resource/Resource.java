@@ -2,15 +2,24 @@ package resource;
 
 import javafx.scene.image.Image;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.Objects;
 
 public abstract class Resource {
     protected Resource() {}
+    protected static URL getURL(String jarPath) {
+        return Objects.requireNonNull(Resource.class.getResource(jarPath));
+    }
+    protected static String getPath(String jarPath) {
+        return getURL(jarPath).toExternalForm();
+    }
     protected static String readString(String jarPath) {
-        return readString(Resource.class.getResource(jarPath));
+        return readString(getURL(jarPath));
     }
     protected static String readString(URL url) {
         try (InputStream inputStream = url.openStream()) {
@@ -22,7 +31,7 @@ public abstract class Resource {
         }
     }
     protected static Image readImage(String jarPath) {
-        return readImage(Objects.requireNonNull(Resource.class.getResource(jarPath)));
+        return readImage(getURL(jarPath));
     }
     protected static Image readImage(URL url) {
         try {

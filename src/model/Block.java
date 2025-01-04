@@ -1,53 +1,32 @@
 package model;
 
-import java.awt.Dimension;
 import java.io.Serializable;
 
-import util.model.IdentityDocument;
-
 public abstract class Block implements Serializable {
-    protected final int _x;
-    protected final int _y;
-//    protected Block(IdentityDocument id) {
-//        _id = id;
-//    }
-    protected IdentityDocument _ownerID;
+    protected final int _x, _y;
+    protected Player _owner;
     public Block(int x, int y) {
         _x = x;
         _y = y;
-//        _id = IdentityDocument.createID();
     }
-//    protected Block(BlockSummary summary) {
-//
-//    }
     public int getX() {
         return _x;
     }
     public int getY() {
         return _y;
     }
-    public static Dimension getImageSize() {
-        return new Dimension(100, 100);
-    } 
-    public static int getImageHeight() {
-        return 100;
-    }
-    public static int getImageWidth() {
-        return 100;
-    }
     protected int _people;
-//    protected Player.GamePlayer _owner;
     public int getPeople() {
         return _people;
     }
     public void setPeople(int people) {
         _people = people;
     }
-    public IdentityDocument getOwnerID() {
-        return _ownerID;
+    public Player getOwner() {
+        return _owner;
     }
-    public void setOwnerID(IdentityDocument id) {
-        _ownerID = id;
+    public void setOwner(Player player) {
+        _owner = player;
     }
     public BlockType getType() {
         if (this instanceof CityBlock) {
@@ -60,8 +39,6 @@ public abstract class Block implements Serializable {
             return BlockType.Unknown;
         }
     }
-//    public abstract Image getImage(boolean isFound);
-//    public abstract Color getColor(boolean isFound);
     public abstract boolean update(Game game);
 //    private final IdentityDocument _id;
 //    @Override

@@ -1,13 +1,11 @@
 package model;
 
 public final class CityBlock extends ObstacleBlock {
+    private static final int updateCount = 2;
     private boolean _isCrown;
 	public CityBlock(int x, int y) {
         this(x, y, false);
     }
-//    protected City(IdentityDocument id) {
-//        super(id);
-//    }
     public CityBlock(int x, int y, boolean isCrown) {
         super(x, y);
         _isCrown = isCrown;
@@ -44,7 +42,7 @@ public final class CityBlock extends ObstacleBlock {
 //    }
     @Override
     public boolean update(Game game) {
-        if (_ownerID != game.getBot().getID()) {
+        if (_owner != game.getBot() && (game.getGameTick() % updateCount) == 0) {
             _people++;
             return true;
         } else {

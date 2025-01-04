@@ -1,13 +1,7 @@
 package model;
 
-import java.awt.Color;
-import java.awt.Image;
-
-import resource.image.ImageResource;
-
 public final class LandBlock extends Block {
-	private static final int updateCount = 25;
-    private int click;
+	private static final int updateCount = 50;
     public LandBlock(int x, int y) {
         super(x, y);
     }
@@ -32,15 +26,12 @@ public final class LandBlock extends Block {
 //    }
     @Override
     public boolean update(Game game) {
-        if (++click >= updateCount) {
-            if (_ownerID != null) {
-                _people++;
-                click = 0;
-                return true;
-            }
-            click = 0;
+        if (getOwner() != null && (game.getGameTick() % updateCount) == 0) {
+            _people++;
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 //    @Override
 //    public LandBlockSummary getSummary() {

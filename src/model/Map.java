@@ -7,10 +7,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Map implements Serializable {
+	private static final int density = 6;
 	private final Block[][] mapBlocks;
-	private transient static final int density = 6;
 	protected final MapSetting _mapSetting;
-//	public Map(int width, int height, Player[] players, Player bot) {
 	public Map(MapSetting setting) {
 		mapBlocks = new Block[setting.getMapWidth()][setting.getMapHeight()];
 		_mapSetting = setting.clone();
@@ -31,7 +30,7 @@ public class Map implements Serializable {
 				int y = j + random.nextInt(density);
 				try {
 					mapBlocks[x][y] = new CityBlock(i, j);
-					mapBlocks[x][y].setOwnerID(setting.getBot().getID());
+					mapBlocks[x][y].setOwner(setting.getBot().getID());
 					mapBlocks[x][y].setPeople(random.nextInt(10) + 40);
 				} catch (ArrayIndexOutOfBoundsException e) {}
 			}
@@ -52,7 +51,7 @@ public class Map implements Serializable {
 			} while (minDistance <= 15);
 			crownPoints[i] = new Point(x, y);
 			mapBlocks[x][y] = new CityBlock(x, y, true);
-			mapBlocks[x][y].setOwnerID(realPlayers.get(i).getID());
+			mapBlocks[x][y].setOwner(realPlayers.get(i).getID());
 		}
 	}
 	public MapSetting getMapSetting() {
@@ -93,8 +92,8 @@ public class Map implements Serializable {
 //	}
 	public static final class MapSetting implements Serializable, Cloneable {
 		private int _width, _height;
-		private final List<Player.GamePlayer> _players;
-		private final Player.GamePlayer _bot;
+		private final Set<Player> _players;
+		private final Player _bot;
 		public int getMapWidth() {
 			return _width;
 		}
@@ -107,35 +106,26 @@ public class Map implements Serializable {
 		public void setMapHeight(int height) {
 			_height = height;
 		}
-		public List<Player.GamePlayer> getPlayers() {
-			return Collections.unmodifiableList(_players);
+		public Set<Player> getPlayers() {
+			return Collections.unmodifiableSet(_players);
 		}
-		public List<Player.GamePlayer> getRealPlayers() {
-			List<Player.GamePlayer> realPlayers = new ArrayList<>(_players.size());
-			for (Player.GamePlayer player : _players) {
-				if (player.isReal()) {
+		public Set<Player> getRealPlayers() {
+			Set<Player> realPlayers = new HashSet<>(_players.size());
+			for (Player player : _players) {
+				if (player != _bot) {
 					realPlayers.add(player);
 				}
 			}
-			return Collections.unmodifiableList(realPlayers);
+			return Collections.unmodifiableSet(realPlayers);
 		}
-		public List<Player.GamePlayer> getForcePlayers() {
-			List<Player.GamePlayer> realPlayers = new ArrayList<>(_players.size());
-			for (Player.GamePlayer player : _players) {
-				if (player.getForceState()) {
-					realPlayers.add(player);
-				}
-			}
-			return Collections.unmodifiableList(realPlayers);
-		}
-		public void addPlayer(Player.GamePlayer player) {
+		public void addPlayer(Player player) {
 			_players.add(player);
 		}
-		public void removePlayer(Player.GamePlayer player) {
+		public void removePlayer(Player player) {
 			_players.remove(player);
 		}
-		public void removeAllPlayer(List<Player.GamePlayer> players) {
-			for (Player.GamePlayer player : players) {
+		public void removeAllPlayer(Set<Player> players) {
+			for (Player player : players) {
 				_players.remove(player);
 			}
 		}

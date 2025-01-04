@@ -1,20 +1,33 @@
 package ui;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
+import resource.UIResource;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class MainSceneController implements Initializable {
+public class MainScene extends Scene implements Initializable {
+    public MainScene() {
+        super(new AnchorPane());
+        FXMLLoader fxmlLoader = new FXMLLoader(UIResource.getMainSceneFxml());
+        fxmlLoader.setRoot(getRoot());
+        fxmlLoader.setController(this);
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        getStylesheets().add(UIResource.getMainSceneCss());
+    }
     @FXML
     private Pane roomPane;
     @FXML
@@ -37,13 +50,13 @@ public class MainSceneController implements Initializable {
     }
     @FXML
     private void onCreateButtonClicked() throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainSceneController.class.getResource("room scene.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainScene.class.getResource("/ui/room scene.fxml"));
         loader.setControllerFactory(param -> new RoomSceneController(true));
         roomPane.getScene().setRoot(loader.load());
     }
     @FXML
     private void onJoinButtonClicked() throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainSceneController.class.getResource("room scene.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainScene.class.getResource("/ui/room scene.fxml"));
         loader.setControllerFactory(param -> new RoomSceneController(false));
         roomPane.getScene().setRoot(loader.load());
     }

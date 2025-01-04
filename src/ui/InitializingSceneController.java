@@ -42,7 +42,7 @@ public class InitializingSceneController implements Initializable {
     }
     private void startGame() throws IOException {
         FXMLLoader loader = new FXMLLoader(InitializingSceneController.class.getResource("game scene.fxml"));
-        loader.setController(new GameSceneController(_gameClient));
+        loader.setController(new GameScene(_gameClient));
         _rootPane.getScene().setRoot(loader.load());
     }
 }

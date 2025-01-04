@@ -1,12 +1,7 @@
 package ui.control;
 
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import model.Block;
@@ -14,7 +9,6 @@ import model.Direction;
 import model.Player;
 import resource.ColorResource;
 import resource.ImageResource;
-import util.model.IdentityDocument;
 
 public class GameCell {
     private final Block _block;
@@ -121,7 +115,7 @@ public class GameCell {
             gc.setLineWidth(1);
         }
         gc.strokeRect(_cellX, _cellY, _cellWidth, _cellHeight);
-        Player.GamePlayer player = _gamePane.getClient().getGameSetting().getPlayer(_block.getOwnerID());
+        Player.GamePlayer player = _gamePane.getClient().getGameSetting().getPlayer(_block.getOwner());
         if (_visible) {
             if (player == null) {
                 gc.setFill(Color.web("#dcdcdc"));

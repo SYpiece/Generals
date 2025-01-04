@@ -24,7 +24,7 @@ public enum Color implements Serializable {
         return _rgba;
     }
     public int getRgb() {
-        return _rgba & 0xffffff00;
+        return _rgba >> 8;
     }
     public int getRed() {
         return (_rgba >> 24) & 0xff;
@@ -45,6 +45,6 @@ public enum Color implements Serializable {
         if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255 || alpha < 0 || alpha > 255) {
             throw new IllegalArgumentException();
         }
-        _rgba = (red << 24) | (green << 16) | (blue << 8) | alpha;
+        _rgba = ((red & 0xff) << 24) | ((green & 0xff) << 16) | ((blue & 0xff) << 8) | (alpha & 0xff);
     }
 }

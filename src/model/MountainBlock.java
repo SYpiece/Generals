@@ -1,10 +1,5 @@
 package model;
 
-import java.awt.Color;
-import java.awt.Image;
-
-import resource.image.ImageResource;
-
 public class MountainBlock extends ObstacleBlock {
 	public MountainBlock(int x, int y) {
         super(x, y);

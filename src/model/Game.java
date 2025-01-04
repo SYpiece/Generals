@@ -7,12 +7,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import util.model.IdentityDocument;
-import util.model.Modelable;
 
 public final class Game implements Serializable {
+    private int _gameTick;
+    public int getGameTick() {
+        return _gameTick;
+    }
     private final Map _map;
     private final GameSetting _gameSetting;
-    public Player.GamePlayer getBot() {
+    public Player getBot() {
         return _gameSetting.getBot();
     }
 //    public List<Team> getTeams() {
@@ -35,7 +38,7 @@ public final class Game implements Serializable {
     public List<Player.GamePlayer> getAlivePlayers() {
         List<IdentityDocument> alivePlayersID = new ArrayList<>();
         _map.forEachBlock(block -> {
-            IdentityDocument id = block.getOwnerID();
+            IdentityDocument id = block.getOwner();
             if (id != null && id != _gameSetting.getBot().getID() && !alivePlayersID.contains(id)) {
                 alivePlayersID.add(id);
             }
@@ -43,12 +46,12 @@ public final class Game implements Serializable {
         return _gameSetting.getAllPlayer(alivePlayersID);
     }
     public boolean isPlayerAlive(Player.GamePlayer player) {
-        return _map.anyBlockMatch(block -> block.getOwnerID() == player.getID());
+        return _map.anyBlockMatch(block -> block.getOwner() == player.getID());
     }
     public List<Integer> getAliveTeams() {
         List<IdentityDocument> aliveTeamsID = new ArrayList<>();
         _map.forEachBlock(block -> {
-            IdentityDocument id = block.getOwnerID();
+            IdentityDocument id = block.getOwner();
             if (id != null && id != _gameSetting.getBot().getID() && !aliveTeamsID.contains(id)) {
                 aliveTeamsID.add(id);
             }
@@ -56,7 +59,7 @@ public final class Game implements Serializable {
         return _gameSetting.getAllPlayerTeam(aliveTeamsID);
     }
     public boolean isTeamAlive(int team) {
-        return _map.anyBlockMatch(block -> block.getOwnerID() != null && _gameSetting.getPlayerTeam(block.getOwnerID()) == team);
+        return _map.anyBlockMatch(block -> block.getOwner() != null && _gameSetting.getPlayerTeam(block.getOwner()) == team);
     }
     public int getMapWidth() {
         return _map.getWidth();
@@ -78,7 +81,7 @@ public final class Game implements Serializable {
                 continue;
             }
             Block fromBlock = _map.getBlockAt(order.fromPoint()), toBlock = _map.getBlockAt(order.toPoint());
-            if (!fromBlock.getOwnerID().equals(toBlock.getOwnerID())) {
+            if (!fromBlock.getOwner().equals(toBlock.getOwner())) {
                 continue;
             }
             if (fromBlock.getPeople() > 1) {
@@ -93,8 +96,8 @@ public final class Game implements Serializable {
                 if (toBlock.getPeople() < 0) {
                     if (toBlock instanceof CityBlock && ((CityBlock) toBlock).isCrown()) {
                         _map.forEachBlock(block -> {
-                            if (block.getOwnerID() == toBlock.getOwnerID()) {
-                                block.setOwnerID(fromBlock.getOwnerID());
+                            if (block.getOwner() == toBlock.getOwner()) {
+                                block.setOwner(fromBlock.getOwner());
                                 if (!changes.contains(block)) {
                                     changes.add(block);
                                 }
@@ -102,7 +105,7 @@ public final class Game implements Serializable {
                         });
                         ((CityBlock) toBlock).beenCaptured();
                     }
-                    toBlock.setOwnerID(fromBlock.getOwnerID());
+                    toBlock.setOwner(fromBlock.getOwner());
                 }
             }
         }
