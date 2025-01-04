@@ -2,7 +2,7 @@ package resource;
 
 import javafx.scene.paint.Color;
 
-public final class ColorResource {
+public final class ColorResource extends Resource {
     public static final Color RED = Color.rgb(255, 0, 0);
     public static final Color LIGHT_BLUE = Color.rgb(67, 99, 216);
     public static final Color GREEN = Color.rgb(0, 128, 0);

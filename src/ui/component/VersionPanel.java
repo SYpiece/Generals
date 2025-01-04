@@ -9,12 +9,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import resource.font.QuicksandFontManager;
-import resource.version.VersionResource;
+import resource.VersionResource;
 
 public class VersionPanel extends JPanel {
     public VersionPanel() {
         setLayout(new GridLayout(2, 1, 0, 0));
-        JLabel gameVersionLabel = new JLabel("game version: " + VersionResource.gameVersion, SwingConstants.RIGHT), coreVersionLabel = new JLabel("core version: " + VersionResource.coreVersion, SwingConstants.RIGHT);
+        JLabel gameVersionLabel = new JLabel("game version: " + VersionResource.getGameVersion(), SwingConstants.RIGHT), coreVersionLabel = new JLabel("core version: " + VersionResource.getCoreVersion(), SwingConstants.RIGHT);
         gameVersionLabel.setFont(QuicksandFontManager.quicksandFont(Font.PLAIN, 15));
         gameVersionLabel.setForeground(Color.WHITE);
         coreVersionLabel.setFont(QuicksandFontManager.quicksandFont(Font.PLAIN, 15));
