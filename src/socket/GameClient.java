@@ -32,7 +32,7 @@ public class GameClient implements Closeable {
     //Running
     public static final int PLAYER_ORDER_ACTION = 625;//Order
 
-    private final Player.PlayerInformation _information;
+//    private final Player.PlayerInformation _information;
     private final Socket _socket;
     protected ObjectInputStream _inputStream;
     protected ObjectOutputStream _outputStream;
@@ -44,12 +44,12 @@ public class GameClient implements Closeable {
     protected GameStatus _gameStatus;
     protected volatile Game _game;
     protected volatile Game.GameSetting _setting;
-    protected volatile Player.GamePlayer _player;
-    public GameClient(Player.PlayerInformation information) {
+    protected volatile Player _player;
+    public GameClient(Player information) {
         _socket = new Socket();
-        _information = information;
+//        _information = information;
     }
-    public GameClient(SocketAddress socketAddress, Player.PlayerInformation information) throws IOException {
+    public GameClient(SocketAddress socketAddress, Player information) throws IOException {
         this(information);
         connect(socketAddress);
     }
@@ -119,20 +119,22 @@ public class GameClient implements Closeable {
         }
     }
     public boolean getForceState() {
-        return _player.getForceState();
+//        return _player.getForceState();
+        return false;
     }
     public void setForceState(boolean force) {
-        if (_player.getForceState() != force) {
-            writeGameMessage(new GameMessage(GameClient.PLAYER_SET_FORCE_STATE, force));
-        }
+//        if (_player.getForceState() != force) {
+//            writeGameMessage(new GameMessage(GameClient.PLAYER_SET_FORCE_STATE, force));
+//        }
     }
     public int getTeam() {
-        return _player.getTeam();
+//        return _player.getTeam();
+        return 0;
     }
     public void setTeamID(int team) {
-        if (_player.getTeam() != team) {
-            writeGameMessage(new GameMessage(GameClient.PLAYER_SET_TEAM, team));
-        }
+//        if (_player.getTeam() != team) {
+//            writeGameMessage(new GameMessage(GameClient.PLAYER_SET_TEAM, team));
+//        }
     }
     public GameStatus getGameState() {
         return _gameStatus;
@@ -164,7 +166,7 @@ public class GameClient implements Closeable {
                 switch (gameMessage.getMessageType()) {
                     //System
                     case GameService.REQUEST_PLAYER_INFORMATION:
-                        _outputStream.writeObject(new GameMessage(GameClient.RESPOND_INFORMATION_REQUEST, _information));
+//                        _outputStream.writeObject(new GameMessage(GameClient.RESPOND_INFORMATION_REQUEST, _information));
                         break;
                     case GameService.GAME_SET_PLAYER_ID:
                         _playerID = gameMessage.getData();
@@ -189,17 +191,17 @@ public class GameClient implements Closeable {
                         break;
                     //Preparing
                     case GameService.GAME_PLAYER_FORCE_CHANGED: {
-                        Player.GamePlayer newPlayer = gameMessage.getData();
-                        Player.GamePlayer oldPlayer = Objects.requireNonNull(_setting.getPlayer(newPlayer.getID()));
-                        oldPlayer.setForceStart(newPlayer.getForceState());
-                        _gamePlayerClientListenerList.fireListenerEvent(GamePlayerClientEvent.createPlayerChanged(this, oldPlayer));
+//                        Player.GamePlayer newPlayer = gameMessage.getData();
+//                        Player.GamePlayer oldPlayer = Objects.requireNonNull(_setting.getPlayer(newPlayer.getID()));
+//                        oldPlayer.setForceStart(newPlayer.getForceState());
+//                        _gamePlayerClientListenerList.fireListenerEvent(GamePlayerClientEvent.createPlayerChanged(this, oldPlayer));
                         break;
                     }
                     case GameService.GAME_PLAYER_TEAM_CHANGED: {
-                        Player.GamePlayer newPlayer = gameMessage.getData();
-                        Player.GamePlayer oldPlayer = Objects.requireNonNull(_setting.getPlayer(newPlayer.getID()));
-                        oldPlayer.setTeam(newPlayer.getTeam());
-                        _gamePlayerClientListenerList.fireListenerEvent(GamePlayerClientEvent.createPlayerChanged(this, oldPlayer));
+//                        Player.GamePlayer newPlayer = gameMessage.getData();
+//                        Player.GamePlayer oldPlayer = Objects.requireNonNull(_setting.getPlayer(newPlayer.getID()));
+//                        oldPlayer.setTeam(newPlayer.getTeam());
+//                        _gamePlayerClientListenerList.fireListenerEvent(GamePlayerClientEvent.createPlayerChanged(this, oldPlayer));
                         break;
                     }
                     //Initializing

@@ -90,10 +90,9 @@ public class Map implements Serializable {
 //	public IdentityDocument getID() {
 //		return _id;
 //	}
-	public static final class MapSetting implements Serializable, Cloneable {
+	public static final class MapSetting implements Serializable {
 		private int _width, _height;
 		private final Set<Player> _players;
-		private final Player _bot;
 		public int getMapWidth() {
 			return _width;
 		}
@@ -106,71 +105,28 @@ public class Map implements Serializable {
 		public void setMapHeight(int height) {
 			_height = height;
 		}
-		public Set<Player> getPlayers() {
+		public Set<Player> getAllPlayers() {
 			return Collections.unmodifiableSet(_players);
 		}
-		public Set<Player> getRealPlayers() {
-			Set<Player> realPlayers = new HashSet<>(_players.size());
-			for (Player player : _players) {
-				if (player != _bot) {
-					realPlayers.add(player);
-				}
-			}
-			return Collections.unmodifiableSet(realPlayers);
+		public boolean addPlayer(Player player) {
+			return _players.add(player);
 		}
-		public void addPlayer(Player player) {
-			_players.add(player);
+		public boolean removePlayer(Player player) {
+			return _players.remove(player);
 		}
-		public void removePlayer(Player player) {
-			_players.remove(player);
-		}
-		public void removeAllPlayer(Set<Player> players) {
-			for (Player player : players) {
-				_players.remove(player);
-			}
+		public boolean removeAllPlayer(Set<Player> players) {
+			return _players.removeAll(players);
 		}
 		public int playerCount() {
 			return _players.size();
 		}
-		public int realPlayerCount() {
-			int realPlayerCount = 0;
-			for (Player.GamePlayer player : _players) {
-				if (player.isReal()) {
-					realPlayerCount++;
-				}
-			}
-			return realPlayerCount;
-		}
-		public int forcePlayerCount() {
-			int forcePlayerCount = 0;
-			for (Player.GamePlayer player : _players) {
-				if (player.getForceState()) {
-					forcePlayerCount++;
-				}
-			}
-			return forcePlayerCount;
-		}
-		public Player.GamePlayer getBot() {
-			return _bot;
-		}
-		public MapSetting() {
-			this(20, 20, new ArrayList<>());
-		}
 		public MapSetting(int width, int height) {
-			this(width, height, Collections.emptyList());
+			this(width, height, new HashSet<>());
 		}
-		public MapSetting(int width, int height, List<Player.GamePlayer> players) {
-			this(width, height, new ArrayList<>(players), Player.GamePlayer.createBot());
-		}
-		private MapSetting(int width, int height, List<Player.GamePlayer> players, Player.GamePlayer bot) {
+		public MapSetting(int width, int height, Set<Player> players) {
 			_width = width;
 			_height = height;
 			_players = players;
-			_bot = bot;
-		}
-		@Override
-		public MapSetting clone() {
-            return new MapSetting(_width, _height, new ArrayList<>(_players), _bot);
 		}
 	}
 }

@@ -42,7 +42,7 @@ public final class CityBlock extends ObstacleBlock {
 //    }
     @Override
     public boolean update(Game game) {
-        if (_owner != game.getBot() && (game.getGameTick() % updateCount) == 0) {
+        if (_owner != null && game.getGameTick() % updateCount == 0) {
             _people++;
             return true;
         } else {

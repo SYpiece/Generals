@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import model.Game;
+import resource.UIResource;
 import socket.GameClient;
 import socket.event.GameClientAdapter;
 import socket.event.GameClientEvent;
@@ -15,13 +16,21 @@ import socket.event.GamePlayerClientAdapter;
 import socket.event.GamePlayerClientEvent;
 import ui.control.GamePane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GameScene extends Scene implements Initializable {
     public GameScene() {
         super(new AnchorPane());
-        FXMLLoader fxmlLoader = new FXMLLoader(GameScene.class.getResource("/ui/"))
+        FXMLLoader fxmlLoader = new FXMLLoader(UIResource.getGameSceneFXML());
+        fxmlLoader.setRoot(getRoot());
+        fxmlLoader.setController(this);
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     private final Pane _rootPane = (Pane) getRoot();
     private final GamePane _gamePane;
@@ -40,6 +49,7 @@ public class GameScene extends Scene implements Initializable {
         }
     };
     public GameScene(GameClient gameClient) {
+        super(new AnchorPane());
         _gameClient = gameClient;
         _gamePane = new GamePane(gameClient);
         _gamePane.setTableWidth(600);

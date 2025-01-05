@@ -5,9 +5,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import model.Player;
+import resource.UIResource;
 import socket.GameClient;
 import socket.GameServer;
 import socket.GameStatus;
@@ -22,15 +25,24 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
-public class RoomSceneController implements Initializable {
+public class RoomScene extends Scene implements Initializable {
     @FXML
     private Pane _rootPane;
     //roomPane
     private final boolean _isHost;
     private GameServer _gameServer;
     private GameClient _gameClient;
-    public RoomSceneController(boolean isHost) {
+    public RoomScene(boolean isHost) {
+        super(new AnchorPane());
         _isHost = isHost;
+        FXMLLoader fxmlLoader = new FXMLLoader(UIResource.getRoomSceneFXML());
+        fxmlLoader.setRoot(getRoot());
+        fxmlLoader.setController(this);
+        try {
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     private Node _isHostLabel;
@@ -52,7 +64,7 @@ public class RoomSceneController implements Initializable {
         }
     };
     private void initializeGame() throws IOException {
-        FXMLLoader loader = new FXMLLoader(RoomSceneController.class.getResource("initializing scene.fxml"));
+        FXMLLoader loader = new FXMLLoader(RoomScene.class.getResource("initializing scene.fxml"));
         loader.setController(new InitializingSceneController(_gameClient));
         _rootPane.getScene().setRoot(loader.load());
     }
@@ -95,7 +107,7 @@ public class RoomSceneController implements Initializable {
             _connectThread.interrupt();
             _connectThread.join();
         }
-        FXMLLoader loader = new FXMLLoader(RoomSceneController.class.getResource("main scene.fxml"));
+        FXMLLoader loader = new FXMLLoader(RoomScene.class.getResource("main scene.fxml"));
         _rootPane.getScene().setRoot(loader.load());
     }
     @FXML

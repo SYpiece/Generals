@@ -3,24 +3,21 @@ package model;
 import java.awt.Point;
 import java.io.Serializable;
 
-import util.model.IdentityDocument;
-
 public final class Order implements Serializable {
 	private final int _x;
     private final int _y;
     private final Direction _direction;
-    private final IdentityDocument _operatorID;
-    public Order(int x, int y, Direction direction, IdentityDocument operatorID) {
+    private final Player _operator;
+    public Order(int x, int y, Direction direction, Player operator) {
         this._x = x;
         this._y = y;
         this._direction = direction;
-        _operatorID = operatorID;
-//        _id = IdentityDocument.createID();
+        _operator = operator;
     }
-    public Order(Point point, Direction direction, IdentityDocument operatorID) {
-        this(point.x, point.y, direction, operatorID);
+    public Order(Point point, Direction direction, Player operator) {
+        this(point.x, point.y, direction, operator);
     }
-    public Order(Point lastPoint, Point newPoint, IdentityDocument operatorID) {
+    public Order(Point lastPoint, Point newPoint, Player operator) {
         if (lastPoint.distance(newPoint) > 1) {
             throw new IllegalArgumentException();
         }
@@ -35,17 +32,10 @@ public final class Order implements Serializable {
         } else {
             _direction = Direction.down;
         }
-        _operatorID = operatorID;
-//        _id = IdentityDocument.createID();
+        _operator = operator;
     }
-//    protected Order(IdentityDocument id) {
-//        _id = id;
-//    }
-//    public Player operator() {
-//        return _operator;
-//    }
-    public IdentityDocument getOperatorID() {
-        return _operatorID;
+    public Player getOperator() {
+        return _operator;
     }
     public int fromX() {
         return _x;
@@ -112,8 +102,4 @@ public final class Order implements Serializable {
     public Direction getDirection() {
         return _direction;
     }
-//    private final IdentityDocument _id;
-//    public IdentityDocument getID() {
-//        return _id;
-//    }
 }

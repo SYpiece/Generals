@@ -115,7 +115,7 @@ public class GameCell {
             gc.setLineWidth(1);
         }
         gc.strokeRect(_cellX, _cellY, _cellWidth, _cellHeight);
-        Player.GamePlayer player = _gamePane.getClient().getGameSetting().getPlayer(_block.getOwner());
+        Player player = _block.getOwner();
         if (_visible) {
             if (player == null) {
                 gc.setFill(Color.web("#dcdcdc"));

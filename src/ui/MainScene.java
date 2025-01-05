@@ -8,17 +8,17 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import resource.UIResource;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainScene extends Scene implements Initializable {
     public MainScene() {
         super(new AnchorPane());
-        FXMLLoader fxmlLoader = new FXMLLoader(UIResource.getMainSceneFxml());
+        FXMLLoader fxmlLoader = new FXMLLoader(UIResource.getMainSceneFXML());
         fxmlLoader.setRoot(getRoot());
         fxmlLoader.setController(this);
         try {
@@ -50,15 +50,17 @@ public class MainScene extends Scene implements Initializable {
     }
     @FXML
     private void onCreateButtonClicked() throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainScene.class.getResource("/ui/room scene.fxml"));
-        loader.setControllerFactory(param -> new RoomSceneController(true));
-        roomPane.getScene().setRoot(loader.load());
+//        FXMLLoader loader = new FXMLLoader(MainScene.class.getResource("/ui/room scene.fxml"));
+//        loader.setControllerFactory(param -> new RoomSceneController(true));
+//        roomPane.getScene().setRoot(loader.load());
+        ((Stage) getWindow()).setScene(new RoomScene(true));
     }
     @FXML
     private void onJoinButtonClicked() throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainScene.class.getResource("/ui/room scene.fxml"));
-        loader.setControllerFactory(param -> new RoomSceneController(false));
-        roomPane.getScene().setRoot(loader.load());
+//        FXMLLoader loader = new FXMLLoader(MainScene.class.getResource("/ui/room scene.fxml"));
+//        loader.setControllerFactory(param -> new RoomSceneController(false));
+//        roomPane.getScene().setRoot(loader.load());
+        ((Stage) getWindow()).setScene(new RoomScene(false));
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {

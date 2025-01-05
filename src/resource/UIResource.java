@@ -4,18 +4,26 @@ import java.net.URL;
 
 public final class UIResource extends Resource {
     private final static URL
-            _gameSceneFxml = getURL("/resource/ui/game scene.fxml"),
-            _mainSceneFxml = getURL("/resource/ui/main scene.fxml");
+            _gameSceneFXML = getURL("/resource/ui/game scene.fxml"),
+            _initializingSceneFXML = getURL("/resource/ui/initializing scene.fxml"),
+            _mainSceneFXML = getURL("/resource/ui/main scene.fxml"),
+            _roomSceneFXML = getURL("/resource/ui/room scene.fxml");
     private final static String
-            _mainSceneCss = getPath("/resource/ui/main scene.css");
-    public static URL getGameSceneFxml() {
-        return _gameSceneFxml;
+            _mainSceneCSS = getPath("/resource/ui/main scene.css");
+    public static URL getGameSceneFXML() {
+        return _gameSceneFXML;
     }
-    public static URL getMainSceneFxml() {
-        return _mainSceneFxml;
+    public static URL getInitializingSceneFXML() {
+        return  _initializingSceneFXML;
+    }
+    public static URL getMainSceneFXML() {
+        return _mainSceneFXML;
+    }
+    public static URL getRoomSceneFXML() {
+        return _roomSceneFXML;
     }
     public static String getMainSceneCss() {
-        return _mainSceneCss;
+        return _mainSceneCSS;
     }
     private UIResource() {}
 }
