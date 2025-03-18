@@ -1,19 +1,17 @@
 package ui;
 
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import model.Game;
 import resource.UIResource;
-import socket.GameClient;
-import socket.event.GameClientAdapter;
-import socket.event.GameClientEvent;
-import socket.event.GamePlayerClientAdapter;
-import socket.event.GamePlayerClientEvent;
+import socket.DefaultGameClient;
+import socket.even.GameClientAdapter;
+import socket.even.GameClientEvent;
+import socket.even.GamePlayerClientAdapter;
+import socket.even.GamePlayerClientEvent;
 import ui.control.GamePane;
 
 import java.io.IOException;
@@ -34,7 +32,7 @@ public class GameScene extends Scene implements Initializable {
     }
     private final Pane _rootPane = (Pane) getRoot();
     private final GamePane _gamePane;
-    private final GameClient _gameClient;
+    private final DefaultGameClient _gameClient;
     private final GamePlayerClientAdapter _playerClientAdapter = new GamePlayerClientAdapter() {
         @Override
         public void gameMapUpdated(GamePlayerClientEvent event) {
@@ -48,7 +46,7 @@ public class GameScene extends Scene implements Initializable {
             _gameClient.removePlayerClientListener(_playerClientAdapter);
         }
     };
-    public GameScene(GameClient gameClient) {
+    public GameScene(DefaultGameClient gameClient) {
         super(new AnchorPane());
         _gameClient = gameClient;
         _gamePane = new GamePane(gameClient);

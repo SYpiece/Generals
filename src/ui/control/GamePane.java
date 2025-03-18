@@ -4,23 +4,23 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
 import model.Direction;
-import model.Game;
-import model.Map;
+import model.DefaultGame;
+import model.DefaultMap;
 import model.Order;
-import socket.GameClient;
+import socket.DefaultGameClient;
 
 public class GamePane extends Canvas {
     public final static int blockMinWidthAndHeight = 15, blockMaxWidthAndHeight = 250, dragMoveDistance = 10;
-    private final GameClient _gameClient;
+    private final DefaultGameClient _gameClient;
     private double _tableX, _tableY, _tableWidth, _tableHeight;
     private final GameCell[][] _cells;
-    public GameClient getClient() {
+    public DefaultGameClient getClient() {
         return _gameClient;
     }
-    public Game getGame() {
+    public DefaultGame getGame() {
         return _gameClient.getGame();
     }
-    public Map getMap() {
+    public DefaultMap getMap() {
         return _gameClient.getGame().getMap();
     }
     public int mapWidth() {
@@ -60,10 +60,10 @@ public class GamePane extends Canvas {
     private double _mousePressX, _mousePressY, _mousePressOffsetX, _mousePressOffsetY;
     private boolean _isDragging;
     private int _selectedX = -1, _selectedY = -1;
-    public GamePane(GameClient gameClient) {
+    public GamePane(DefaultGameClient gameClient) {
         _gameClient = gameClient;
         _cells = new GameCell[mapWidth()][mapHeight()];
-        Map map = gameClient.getGame().getMap();
+        DefaultMap map = gameClient.getGame().getMap();
         for (int x = 0; x < mapWidth(); x++) {
             for (int y = 0; y < mapHeight(); y++) {
                 GameCell cell = new GameCell(map.getBlockAt(x, y), this);
@@ -132,16 +132,16 @@ public class GamePane extends Canvas {
         setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case W:
-                    moveSelectedPoint(Direction.up);
+                    moveSelectedPoint(Direction.Up);
                     break;
                 case A:
-                    moveSelectedPoint(Direction.left);
+                    moveSelectedPoint(Direction.Left);
                     break;
                 case S:
-                    moveSelectedPoint(Direction.down);
+                    moveSelectedPoint(Direction.Down);
                     break;
                 case D:
-                    moveSelectedPoint(Direction.right);
+                    moveSelectedPoint(Direction.Right);
                     break;
             }
             event.consume();
@@ -196,25 +196,25 @@ public class GamePane extends Canvas {
         int selectedX = _selectedX, selectedY = _selectedY;
         cancelSelectedPoint();
         switch (direction) {
-            case left:
+            case Left:
                 if (selectedX > 0) {
                     selectPoint(selectedX - 1, selectedY);
                     return;
                 }
                 break;
-            case right:
+            case Right:
                 if (selectedX < mapWidth() - 1) {
                     selectPoint(selectedX + 1, selectedY);
                     return;
                 }
                 break;
-            case up:
+            case Up:
                 if (selectedY > 0) {
                     selectPoint(selectedX, selectedY - 1);
                     return;
                 }
                 break;
-            case down:
+            case Down:
                 if (selectedY < mapHeight() - 1) {
                     selectPoint(selectedX, selectedY + 1);
                     return;

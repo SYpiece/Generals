@@ -21,7 +21,7 @@ public final class ColorResource extends Resource {
     public static Color getBotColor() {
         return GRAY;
     }
-    public static Color getColor(resource.color.Color color) {
+    public static Color getColor(model.Color color) {
         return Color.rgb(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 255.0);
     }
     private ColorResource() {}

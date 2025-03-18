@@ -4,37 +4,37 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import model.Block;
+import model.BlockBase;
 import model.Direction;
-import model.Player;
+import model.DefaultPlayer;
 import resource.ColorResource;
 import resource.ImageResource;
 
 public class GameCell {
-    private final Block _block;
+    private final BlockBase _blockBase;
     private double _cellX, _cellY, _cellWidth, _cellHeight;
     private boolean _leftOrderLabelVisible, _rightOrderLabelVisible, _upOrderLabelVisible, _downOrderLabelVisible, _attackable, _visible, _selected;
     private final GamePane _gamePane;
-    public Block getBlock() {
-        return _block;
+    public BlockBase getBlock() {
+        return _blockBase;
     }
     public GamePane getGamePane() {
         return _gamePane;
     }
-    public GameCell(Block block, GamePane gamePane) {
-        _block = block;
+    public GameCell(BlockBase blockBase, GamePane gamePane) {
+        _blockBase = blockBase;
         _gamePane = gamePane;
         setVisible(true);
     }
     public boolean isOrderVisible(Direction direction) {
         switch (direction) {
-            case left:
+            case Left:
                 return _leftOrderLabelVisible;
-            case right:
+            case Right:
                 return _rightOrderLabelVisible;
-            case up:
+            case Up:
                 return _upOrderLabelVisible;
-            case down:
+            case Down:
                 return _downOrderLabelVisible;
             default:
                 return false;
@@ -42,43 +42,43 @@ public class GameCell {
     }
     public void setOrderVisible(Direction direction, boolean visible) {
         switch (direction) {
-            case left:
+            case Left:
                 _leftOrderLabelVisible = visible;
                 break;
-            case right:
+            case Right:
                 _rightOrderLabelVisible = visible;
                 break;
-            case up:
+            case Up:
                 _upOrderLabelVisible = visible;
                 break;
-            case down:
+            case Down:
                 _downOrderLabelVisible = visible;
                 break;
         }
     }
     public boolean isUpOrderVisible() {
-        return isOrderVisible(Direction.up);
+        return isOrderVisible(Direction.Up);
     }
     public boolean isRightOrderVisible() {
-        return isOrderVisible(Direction.right);
+        return isOrderVisible(Direction.Right);
     }
     public boolean isDownOrderVisible() {
-        return isOrderVisible(Direction.down);
+        return isOrderVisible(Direction.Down);
     }
     public boolean isLeftOrderVisible() {
-        return isOrderVisible(Direction.left);
+        return isOrderVisible(Direction.Left);
     }
     public void setUpOrderVisible(boolean visible) {
-        setOrderVisible(Direction.up, visible);
+        setOrderVisible(Direction.Up, visible);
     }
     public void setRightOrderVisible(boolean visible) {
-        setOrderVisible(Direction.right, visible);
+        setOrderVisible(Direction.Right, visible);
     }
     public void setDownOrderVisible(boolean visible) {
-        setOrderVisible(Direction.down, visible);
+        setOrderVisible(Direction.Down, visible);
     }
     public void setLeftOrderVisible(boolean visible) {
-        setOrderVisible(Direction.left, visible);
+        setOrderVisible(Direction.Left, visible);
     }
     public boolean isAttackable() {
         return _attackable;
@@ -115,7 +115,7 @@ public class GameCell {
             gc.setLineWidth(1);
         }
         gc.strokeRect(_cellX, _cellY, _cellWidth, _cellHeight);
-        Player player = _block.getOwner();
+        DefaultPlayer player = _blockBase.getOwner();
         if (_visible) {
             if (player == null) {
                 gc.setFill(Color.web("#dcdcdc"));
@@ -126,12 +126,12 @@ public class GameCell {
             gc.setFill(Color.rgb(255, 255, 255, .1));
         }
         gc.fillRect(_cellX + 1, _cellY + 1, _cellWidth - 2, _cellHeight - 2);
-        gc.drawImage(ImageResource.getBlockImage(_block, _visible), _cellX + 1 + _cellWidth * .1, _cellY + 1 + _cellHeight * .1, _cellWidth - 2 - _cellWidth * .2, _cellHeight - 2 - _cellHeight * .2);
+        gc.drawImage(ImageResource.getBlockImage(_blockBase, _visible), _cellX + 1 + _cellWidth * .1, _cellY + 1 + _cellHeight * .1, _cellWidth - 2 - _cellWidth * .2, _cellHeight - 2 - _cellHeight * .2);
         gc.setFill(Color.WHITE);
         if (_visible && player != null) {
             gc.setTextAlign(TextAlignment.CENTER);
             gc.setTextBaseline(VPos.CENTER);
-            gc.fillText(String.valueOf(_block.getPeople()), _cellX + _cellWidth / 2, _cellY + _cellHeight / 2, _cellWidth - 2);
+            gc.fillText(String.valueOf(_blockBase.getPeople()), _cellX + _cellWidth / 2, _cellY + _cellHeight / 2, _cellWidth - 2);
         }
         if (_leftOrderLabelVisible) {
             gc.setTextAlign(TextAlignment.LEFT);

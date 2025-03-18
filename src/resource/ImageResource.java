@@ -1,34 +1,23 @@
 package resource;
 
 import javafx.scene.image.Image;
-import model.Block;
+import model.ImageType;
 
 public final class ImageResource extends Resource {
-    private static final Image _cityImage = readImage("/image/city.png");
-    private static final Image _crownImage = readImage("/image/crown.png");
-    private static final Image _mountainImage = readImage("/image/mountain.png");
-    private static final Image _obstacleImage = readImage("/image/obstacle.png");
-    public static Image getBlockImage(Block block, boolean isFound) {
-        switch (block.getType()) {
+    private static final Image cityImage = readImage("/image/city.png");
+    private static final Image crownImage = readImage("/image/crown.png");
+    private static final Image mountainImage = readImage("/image/mountain.png");
+    private static final Image obstacleImage = readImage("/image/obstacle.png");
+    public static Image getBlockImage(ImageType imageType) {
+        switch (imageType) {
             case City:
-                if (isFound) {
-                    return _cityImage;
-                } else {
-                    return _obstacleImage;
-                }
+                return cityImage;
             case Crown:
-                if (isFound) {
-                    return _crownImage;
-                } else {
-                    return null;
-                }
+                return crownImage;
             case Mountain:
-                if (isFound) {
-                    return _mountainImage;
-                } else {
-                    return _obstacleImage;
-                }
-            case Land:
+                return mountainImage;
+            case Obstacle:
+                return obstacleImage;
             default:
                 return null;
         }

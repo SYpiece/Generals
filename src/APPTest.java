@@ -1,12 +1,12 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Player;
-import socket.GameClient;
-import socket.GameServer;
-import socket.event.GameClientAdapter;
-import socket.event.GameClientEvent;
-import socket.event.GamePlayerClientAdapter;
-import socket.event.GamePlayerClientEvent;
+import model.DefaultPlayer;
+import socket.DefaultGameClient;
+import socket.DefaultServer;
+import socket.even.GameClientAdapter;
+import socket.even.GameClientEvent;
+import socket.even.GamePlayerClientAdapter;
+import socket.even.GamePlayerClientEvent;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -19,9 +19,9 @@ public class APPTest {
     }
     private static void test1() throws IOException, ClassNotFoundException {
         SocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName("localhost"), 44444);
-        GameServer gameServer = new GameServer(socketAddress);
+        DefaultServer gameServer = new DefaultServer(socketAddress);
         gameServer.start();
-        GameClient gameClient = new GameClient(socketAddress, new Player.PlayerInformation());
+        DefaultGameClient gameClient = new DefaultGameClient(socketAddress, new DefaultPlayer.PlayerInformation());
         gameClient.addClientListener(new GameClientAdapter() {
             @Override
             public void gameJoined(GameClientEvent event) {

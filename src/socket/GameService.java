@@ -9,9 +9,9 @@ import java.util.List;
 import event.SyncEventListenerList;
 import model.*;
 import resource.VersionResource;
-import resource.color.Color;
+import model.Color;
 import resource.version.Version;
-import socket.event.*;
+import socket.even.*;
 
 public class GameService implements Closeable {
     //System
@@ -53,8 +53,8 @@ public class GameService implements Closeable {
     public void start() {
         _serviceThread.start();
     }
-    private volatile Player.GamePlayer _player;
-    public Player.GamePlayer getPlayer() {
+    private volatile DefaultPlayer.GamePlayer _player;
+    public DefaultPlayer.GamePlayer getPlayer() {
         return _player;
     }
     private volatile GameStatus _gameStatus;
@@ -78,36 +78,36 @@ public class GameService implements Closeable {
 //                System.out.println("service:" + gameMessage);
                 switch (gameMessage.getMessageType()) {
                     //System
-                    case GameClient.RESPOND_INFORMATION_REQUEST: {
-                        Player.PlayerInformation information = gameMessage.getData();
-                        _player = Player.GamePlayer.createCompetitor(information, Color.RED, 1);
+                    case DefaultGameClient.RESPOND_INFORMATION_REQUEST: {
+                        DefaultPlayer.PlayerInformation information = gameMessage.getData();
+                        _player = DefaultPlayer.GamePlayer.createCompetitor(information, Color.RED, 1);
                         _gameServiceListenerList.fireListenerEvent(GameServiceEvent.createPlayerJoinedEvent(this));
                         writeGameMessage(new GameMessage(GameService.GAME_SET_PLAYER_ID, _player.getID()));
                         break;
                     }
                     //Global
-                    case GameClient.PLAYER_JOINED:
+                    case DefaultGameClient.PLAYER_JOINED:
                         writeGameMessage(new GameMessage(GameService.REQUEST_PLAYER_INFORMATION));
                         break;
-                    case GameClient.PLAYER_EXITED:
+                    case DefaultGameClient.PLAYER_EXITED:
                         _gameServiceListenerList.fireListenerEvent(GameServiceEvent.createPlayerExitedEvent(this));
                         return;
-                    case GameClient.PLAYER_SEND_MESSAGE: {
+                    case DefaultGameClient.PLAYER_SEND_MESSAGE: {
                         Message message = gameMessage.getData();
                         _gameMessageServiceListenerList.fireListenerEvent(GameMessageServiceEvent.createPlayerMessageEvent(this, message));
                         break;
                     }
                     //Preparing
-                    case GameClient.PLAYER_SET_FORCE_STATE:
+                    case DefaultGameClient.PLAYER_SET_FORCE_STATE:
                         _player.setForceStart(gameMessage.getData());
                         _gamePlayerServiceListenerList.fireListenerEvent(GamePlayerServiceEvent.createForceStateEvent(this));
                         break;
-                    case GameClient.PLAYER_SET_TEAM:
+                    case DefaultGameClient.PLAYER_SET_TEAM:
                         _player.setTeam(gameMessage.getData());
                         _gamePlayerServiceListenerList.fireListenerEvent(GamePlayerServiceEvent.createTeamChangedEvent(this));
                         break;
                     //Running
-                    case GameClient.PLAYER_ORDER_ACTION:
+                    case DefaultGameClient.PLAYER_ORDER_ACTION:
                         _order = gameMessage.getData();
                         break;
                     default:
@@ -133,28 +133,28 @@ public class GameService implements Closeable {
         _order = null;
         return _order;
     }
-    public void writeMapUpdates(List<Block> models) {
+    public void writeMapUpdates(List<BlockBase> models) {
         writeGameMessage(new GameMessage(GameService.GAME_MAP_UPDATED, models));
     }
-    public void writeGameSetting(Game.GameSetting setting) {
+    public void writeGameSetting(DefaultGame.GameSetting setting) {
         writeGameMessage(new GameMessage(GameService.GAME_SETTING_INITIALIZED, setting));
     }
     public void writePlayerMessage(Message message) {
         writeGameMessage(new GameMessage(GameService.PLAYER_SEND_MESSAGE, message));
     }
-    public void writeGameModel(Game game) {
+    public void writeGameModel(DefaultGame game) {
         writeGameMessage(new GameMessage(GameService.GAME_MODEL_INITIALIZED, game));
     }
-    public void writeJoinedPlayer(Player.GamePlayer player) {
+    public void writeJoinedPlayer(DefaultPlayer.GamePlayer player) {
         writeGameMessage(new GameMessage(GameService.GAME_PLAYER_JOINED, player));
     }
-    public void writeExitedPlayer(Player.GamePlayer player) {
+    public void writeExitedPlayer(DefaultPlayer.GamePlayer player) {
         writeGameMessage(new GameMessage(GameService.GAME_PLAYER_EXITED, player));
     }
-    public void writeForceChangedPlayer(Player.GamePlayer player) {
+    public void writeForceChangedPlayer(DefaultPlayer.GamePlayer player) {
         writeGameMessage(new GameMessage(GameService.GAME_PLAYER_FORCE_CHANGED, player));
     }
-    public void writeTeamChangedPlayer(Player.GamePlayer player) {
+    public void writeTeamChangedPlayer(DefaultPlayer.GamePlayer player) {
         writeGameMessage(new GameMessage(GameService.GAME_PLAYER_TEAM_CHANGED, player));
     }
     private void writeGameMessage(GameMessage message) {

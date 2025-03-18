@@ -6,14 +6,14 @@ import java.util.Set;
 
 public class Team {
     protected String _name;
-    protected Set<Player> _players = new HashSet<>();
+    protected Set<DefaultPlayer> _players = new HashSet<>();
     public String getName() {
         return _name;
     }
     public void setName(String name) {
         _name = name;
     }
-    public Set<Player> getAllPlayers() {
+    public Set<DefaultPlayer> getAllPlayers() {
         return Collections.unmodifiableSet(_players);
     }
     public Team() {
@@ -22,7 +22,7 @@ public class Team {
     public Team(String name) {
         setName(name);
     }
-    public boolean addPlayer(Player player) {
+    public boolean addPlayer(DefaultPlayer player) {
         if (player.getTeam() == null) {
             _players.add(player);
             player.setTeam(this);
@@ -31,7 +31,7 @@ public class Team {
             return false;
         }
     }
-    public boolean removePlayer(Player player) {
+    public boolean removePlayer(DefaultPlayer player) {
         if (player.getTeam() == this) {
             _players.remove(player);
             player.setTeam(null);

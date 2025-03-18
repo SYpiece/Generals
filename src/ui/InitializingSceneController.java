@@ -5,10 +5,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.Pane;
-import socket.GameClient;
+import socket.DefaultGameClient;
 import socket.GameStatus;
-import socket.event.GameClientAdapter;
-import socket.event.GameClientEvent;
+import socket.even.GameClientAdapter;
+import socket.even.GameClientEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public class InitializingSceneController implements Initializable {
     @FXML
     private Pane _rootPane;
-    private final GameClient _gameClient;
+    private final DefaultGameClient _gameClient;
     private final GameClientAdapter _clientAdapter = new GameClientAdapter() {
         @Override
         public void gameStatusChanged(GameClientEvent event) {
@@ -33,7 +33,7 @@ public class InitializingSceneController implements Initializable {
             }
         }
     };
-    public InitializingSceneController(GameClient gameClient) {
+    public InitializingSceneController(DefaultGameClient gameClient) {
         _gameClient = gameClient;
     }
     @Override

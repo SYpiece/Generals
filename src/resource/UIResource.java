@@ -22,7 +22,7 @@ public final class UIResource extends Resource {
     public static URL getRoomSceneFXML() {
         return _roomSceneFXML;
     }
-    public static String getMainSceneCss() {
+    public static String getMainSceneCSS() {
         return _mainSceneCSS;
     }
     private UIResource() {}

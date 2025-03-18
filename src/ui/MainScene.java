@@ -26,7 +26,7 @@ public class MainScene extends Scene implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        getStylesheets().add(UIResource.getMainSceneCss());
+        getStylesheets().add(UIResource.getMainSceneCSS());
     }
     @FXML
     private Pane roomPane;

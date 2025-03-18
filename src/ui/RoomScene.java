@@ -9,13 +9,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import model.Player;
+import model.DefaultPlayer;
 import resource.UIResource;
-import socket.GameClient;
-import socket.GameServer;
+import socket.DefaultGameClient;
+import socket.DefaultServer;
 import socket.GameStatus;
-import socket.event.GameClientAdapter;
-import socket.event.GameClientEvent;
+import socket.even.GameClientAdapter;
+import socket.even.GameClientEvent;
 import ui.control.RoomConnectProgressIndicator;
 
 import java.io.IOException;
@@ -30,8 +30,8 @@ public class RoomScene extends Scene implements Initializable {
     private Pane _rootPane;
     //roomPane
     private final boolean _isHost;
-    private GameServer _gameServer;
-    private GameClient _gameClient;
+    private DefaultServer _gameServer;
+    private DefaultGameClient _gameClient;
     public RoomScene(boolean isHost) {
         super(new AnchorPane());
         _isHost = isHost;
@@ -75,12 +75,12 @@ public class RoomScene extends Scene implements Initializable {
             _notHostLabel.setVisible(false);
             _roomConnectPane.setVisible(false);
             try {
-                _gameServer = new GameServer(new InetSocketAddress("127.0.0.1", 44444));
+                _gameServer = new DefaultServer(new InetSocketAddress("127.0.0.1", 44444));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             try {
-                _gameClient = new GameClient(new InetSocketAddress("127.0.0.1", 44444), new Player.PlayerInformation());
+                _gameClient = new DefaultGameClient(new InetSocketAddress("127.0.0.1", 44444), new DefaultPlayer.PlayerInformation());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -139,7 +139,7 @@ public class RoomScene extends Scene implements Initializable {
         _connectThread = new Thread(() -> {
             boolean isConnected;
             try {
-                _gameClient = new GameClient(new InetSocketAddress(inetAddress, port), null);
+                _gameClient = new DefaultGameClient(new InetSocketAddress(inetAddress, port), null);
                 isConnected = true;
             } catch (IOException e) {
                 _gameClient = null;

@@ -9,11 +9,11 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public final class MusicResource extends Resource {
-    private static final Clip _clip = getCilp();
+    private static final Clip _clip = getClip();
     public static final String gongMusicName = "gong.wav";
     public static final URL gongMusicURL = MusicResource.class.getResource(gongMusicName);
     private MusicResource() {}
-    private static Clip getCilp() {
+    private static Clip getClip() {
         try {
             return AudioSystem.getClip();
         } catch (LineUnavailableException e) {

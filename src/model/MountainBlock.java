@@ -1,36 +1,18 @@
 package model;
 
-public class MountainBlock extends ObstacleBlock {
-	public MountainBlock(int x, int y) {
-        super(x, y);
-    }
-//    protected Mountain(IdentityDocument id) {
-//        super(id);
-//    }
-//    @Override
-//    public Image getImage(boolean isFound) {
-//        if (isFound) {
-//            return ImageResource.mountainImage;
-//        } else {
-//            return ImageResource.obstacleImage;
-//        }
-//    }
-//    @Override
-//    public Color getColor(boolean isFound) {
-//        return Color.LIGHT_GRAY;
-//    }
+public interface MountainBlock extends Block {
     @Override
-    public boolean update(Game game) {
-        return false;
+    default BlockType getBlockType() {
+        return BlockType.Mountain;
     }
 
-//    @Override
-//    public MountainBlockSummary getSummary() {
-//        return new MountainBlockSummary(this);
-//    }
-//    public static class MountainBlockSummary extends BlockSummary {
-//        public MountainBlockSummary(MountainBlock mountainBlock) {
-//            super(mountainBlock);
-//        }
-//    }
+    @Override
+    default ImageType getImageType(boolean shown) {
+        return shown ? ImageType.Mountain : ImageType.Obstacle;
+    }
+
+    @Override
+    default Color getBackground(boolean shown) {
+        return Color.GRAY;
+    }
 }
