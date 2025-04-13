@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import model.DefaultPlayer;
 import resource.UIResource;
 import socket.DefaultGameClient;
-import socket.DefaultServer;
+import util.socket.ServerBase;
 import socket.GameStatus;
 import socket.even.GameClientAdapter;
 import socket.even.GameClientEvent;
@@ -30,7 +30,7 @@ public class RoomScene extends Scene implements Initializable {
     private Pane _rootPane;
     //roomPane
     private final boolean _isHost;
-    private DefaultServer _gameServer;
+    private ServerBase _gameServer;
     private DefaultGameClient _gameClient;
     public RoomScene(boolean isHost) {
         super(new AnchorPane());
@@ -75,7 +75,7 @@ public class RoomScene extends Scene implements Initializable {
             _notHostLabel.setVisible(false);
             _roomConnectPane.setVisible(false);
             try {
-                _gameServer = new DefaultServer(new InetSocketAddress("127.0.0.1", 44444));
+                _gameServer = new ServerBase(new InetSocketAddress("127.0.0.1", 44444));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

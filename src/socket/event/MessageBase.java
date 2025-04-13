@@ -1,6 +1,8 @@
 package socket.event;
 
-public abstract class EventBase implements Event {
+import util.socket.Message;
+
+public abstract class MessageBase implements Message {
     protected final EventType eventType;
 
     @Override
@@ -8,7 +10,7 @@ public abstract class EventBase implements Event {
         return eventType;
     }
 
-    protected EventBase(EventType type) {
+    protected MessageBase(EventType type) {
         eventType = type;
     }
 }

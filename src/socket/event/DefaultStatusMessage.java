@@ -2,7 +2,7 @@ package socket.event;
 
 import socket.GameStatus;
 
-public class DefaultStatusEvent extends EventBase implements StatusEvent {
+public class DefaultStatusMessage extends MessageBase implements StatusMessage {
     protected final GameStatus status;
 
     @Override
@@ -10,7 +10,7 @@ public class DefaultStatusEvent extends EventBase implements StatusEvent {
         return status;
     }
 
-    public DefaultStatusEvent(GameStatus status) {
+    public DefaultStatusMessage(GameStatus status) {
         super(EventType.StatusEvent);
         this.status = status;
     }

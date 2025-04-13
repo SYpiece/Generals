@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class DefaultMessageEvent extends EventBase implements MessageEvent {
+public class DefaultMessageMessage extends MessageBase implements MessageMessage {
     protected Message message;
 
     @Override
@@ -14,7 +14,7 @@ public class DefaultMessageEvent extends EventBase implements MessageEvent {
         return message;
     }
 
-    public DefaultMessageEvent(Message message) {
+    public DefaultMessageMessage(Message message) {
         super(EventType.MessageEvent);
         this.message = message;
     }

@@ -2,7 +2,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.DefaultPlayer;
 import socket.DefaultGameClient;
-import socket.DefaultServer;
+import util.socket.ServerBase;
 import socket.even.GameClientAdapter;
 import socket.even.GameClientEvent;
 import socket.even.GamePlayerClientAdapter;
@@ -19,7 +19,7 @@ public class APPTest {
     }
     private static void test1() throws IOException, ClassNotFoundException {
         SocketAddress socketAddress = new InetSocketAddress(InetAddress.getByName("localhost"), 44444);
-        DefaultServer gameServer = new DefaultServer(socketAddress);
+        ServerBase gameServer = new ServerBase(socketAddress);
         gameServer.start();
         DefaultGameClient gameClient = new DefaultGameClient(socketAddress, new DefaultPlayer.PlayerInformation());
         gameClient.addClientListener(new GameClientAdapter() {

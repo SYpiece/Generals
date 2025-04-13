@@ -1,6 +1,7 @@
 package socket;
 
-import socket.event.Event;
+import util.socket.Message;
+import util.socket.Client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -73,9 +74,9 @@ public class DefaultSubServer implements Client {
     }
 
     final Thread handleThread = new Thread(this::doHandle);
-    final Queue<Event> receivedEvents = new LinkedList<>();
-    final Queue<HandlerAttachmentHolder<Void, ?, Event>> sendingHandlersHolders = new LinkedList<>();
-    final Queue<HandlerAttachmentHolder<Event, ?, Void>> receivingHandlersHolders = new LinkedList<>();
+    final Queue<Message> receivedMessages = new LinkedList<>();
+    final Queue<HandlerAttachmentHolder<Void, ?, Message>> sendingHandlersHolders = new LinkedList<>();
+    final Queue<HandlerAttachmentHolder<Message, ?, Void>> receivingHandlersHolders = new LinkedList<>();
 
     /**
      * 启动处理线程，开始处理客户端通信。
@@ -101,37 +102,37 @@ public class DefaultSubServer implements Client {
                     } catch (IOException | ClassNotFoundException e) {
                         logger.log(Level.ALL, e.getMessage());
                     }
-                    if (object instanceof Event) {
-                        Event event = (Event) object;
-                        HandlerAttachmentHolder<Event, ?, Void> holder = null;
+                    if (object instanceof Message) {
+                        Message message = (Message) object;
+                        HandlerAttachmentHolder<Message, ?, Void> holder = null;
                         synchronized (receivingHandlersHolders) {
                             holder = receivingHandlersHolders.poll();
                         }
                         if (holder != null) {
                             try {
-                                holder.handlerCompleted(event);
+                                holder.handlerCompleted(message);
                             } catch (Throwable e) {
                                 logger.log(Level.ALL, e.getMessage());
                             }
                         } else {
-                            receivedEvents.add(event);
+                            receivedMessages.add(message);
                         }
                     }
-                } else if (!receivedEvents.isEmpty()) {
-                    HandlerAttachmentHolder<Event, ?, Void> receivingHolder = null;
+                } else if (!receivedMessages.isEmpty()) {
+                    HandlerAttachmentHolder<Message, ?, Void> receivingHolder = null;
                     synchronized (receivingHandlersHolders) {
                         receivingHolder = receivingHandlersHolders.poll();
                     }
                     if (receivingHolder != null) {
                         try {
-                            receivingHolder.handlerCompleted(receivedEvents.poll());
+                            receivingHolder.handlerCompleted(receivedMessages.poll());
                         } catch (Throwable e) {
                             logger.log(Level.ALL, e.getMessage());
                         }
                     }
                 }
 
-                HandlerAttachmentHolder<Void, ?, Event> sendingHolder = null;
+                HandlerAttachmentHolder<Void, ?, Message> sendingHolder = null;
                 synchronized (sendingHandlersHolders) {
                     sendingHolder = sendingHandlersHolders.poll();
                 }
@@ -156,11 +157,11 @@ public class DefaultSubServer implements Client {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            if (!receivedEvents.isEmpty()) {
+            if (!receivedMessages.isEmpty()) {
                 synchronized (receivingHandlersHolders) {
-                    while (!receivedEvents.isEmpty() && !receivingHandlersHolders.isEmpty()) {
+                    while (!receivedMessages.isEmpty() && !receivingHandlersHolders.isEmpty()) {
                         try {
-                            receivingHandlersHolders.poll().handlerCompleted(receivedEvents.poll());
+                            receivingHandlersHolders.poll().handlerCompleted(receivedMessages.poll());
                         } catch (Throwable e) {
                             logger.log(Level.ALL, e.getMessage());
                         }
@@ -168,7 +169,7 @@ public class DefaultSubServer implements Client {
                 }
             }
             synchronized (receivingHandlersHolders) {
-                for (HandlerAttachmentHolder<Event, ?, Void> holder : receivingHandlersHolders) {
+                for (HandlerAttachmentHolder<Message, ?, Void> holder : receivingHandlersHolders) {
                     try {
                         holder.handleFailed(new IOException());
                     } catch (Exception e) {
@@ -190,8 +191,8 @@ public class DefaultSubServer implements Client {
         if (serverState != ClientState.Running) {
             throw new IOException();
         }
-        synchronized (receivedEvents) {
-            return receivedEvents.size();
+        synchronized (receivedMessages) {
+            return receivedMessages.size();
         }
     }
 
@@ -202,7 +203,7 @@ public class DefaultSubServer implements Client {
      * @throws IOException 如果客户端状态不是 Running 或者获取事件时发生错误
      */
     @Override
-    public Event receive() throws IOException {
+    public Message receive() throws IOException {
         if (serverState != ClientState.Running) {
             throw new IOException();
         }
@@ -222,21 +223,21 @@ public class DefaultSubServer implements Client {
      * @return 表示异步操作的 Future 对象
      */
     @Override
-    public <A> Future<Event> receive(CompletionHandler<Event, A> handler, A attachment) {
+    public <A> Future<Message> receive(CompletionHandler<Message, A> handler, A attachment) {
         return doReceive(handler, attachment);
     }
 
-    protected <A> Future<Event> doReceive(CompletionHandler<Event, A> handler, A attachment) {
-        final HandlerAttachmentHolder<Event, A, Void> holder = new HandlerAttachmentHolder<>();
-        final SocketFuture<Event> receivingFuture = new SocketFuture<>(() -> {
+    protected <A> Future<Message> doReceive(CompletionHandler<Message, A> handler, A attachment) {
+        final HandlerAttachmentHolder<Message, A, Void> holder = new HandlerAttachmentHolder<>();
+        final SocketFutureBase<Message> receivingFuture = new SocketFutureBase<>(() -> {
             synchronized (receivingHandlersHolders) {
                 receivingHandlersHolders.remove(holder);
             }
         });
         if (handler == null) {
-            holder.setCompletionHandler(new CompletionHandler<Event, A>() {
+            holder.setCompletionHandler(new CompletionHandler<Message, A>() {
                 @Override
-                public void completed(Event result, A attachment) {
+                public void completed(Message result, A attachment) {
                     receivingFuture.getCompletionHandler().completed(result, null);
                 }
 
@@ -246,9 +247,9 @@ public class DefaultSubServer implements Client {
                 }
             });
         } else {
-            holder.setCompletionHandler(new CompletionHandler<Event, A>() {
+            holder.setCompletionHandler(new CompletionHandler<Message, A>() {
                 @Override
-                public void completed(Event result, A attachment) {
+                public void completed(Message result, A attachment) {
                     handler.completed(result, attachment);
                     receivingFuture.getCompletionHandler().completed(result, null);
                 }
@@ -280,16 +281,16 @@ public class DefaultSubServer implements Client {
     /**
      * 发送一个事件到客户端。
      *
-     * @param event 要发送的事件
+     * @param message 要发送的事件
      * @throws IOException 如果客户端状态不是 Running 或者发送事件时发生错误
      */
     @Override
-    public void send(Event event) throws IOException {
+    public void send(Message message) throws IOException {
         if (serverState != ClientState.Running) {
             throw new IOException();
         }
         try {
-            doSend(null, null, event).get();
+            doSend(null, null, message).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new IOException(e);
         }
@@ -300,18 +301,18 @@ public class DefaultSubServer implements Client {
      *
      * @param handler 处理发送结果的 CompletionHandler
      * @param attachment 附加对象
-     * @param event 要发送的事件
+     * @param message 要发送的事件
      * @param <A> 附加对象的类型
      * @return 表示异步操作的 Future 对象
      */
     @Override
-    public <A> Future<Void> send(CompletionHandler<Void, A> handler, A attachment, Event event) {
-        return doSend(handler, attachment, event);
+    public <A> Future<Void> send(CompletionHandler<Void, A> handler, A attachment, Message message) {
+        return doSend(handler, attachment, message);
     }
 
-    protected <A> Future<Void> doSend(CompletionHandler<Void, A> handler, A attachment, Event event) {
-        final HandlerAttachmentHolder<Void, A, Event> holder = new HandlerAttachmentHolder<>();
-        final SocketFuture<Void> sendingFuture = new SocketFuture<>(() -> {
+    protected <A> Future<Void> doSend(CompletionHandler<Void, A> handler, A attachment, Message message) {
+        final HandlerAttachmentHolder<Void, A, Message> holder = new HandlerAttachmentHolder<>();
+        final SocketFutureBase<Void> sendingFuture = new SocketFutureBase<>(() -> {
             synchronized (sendingHandlersHolders) {
                 sendingHandlersHolders.remove(holder);
             }
@@ -344,7 +345,7 @@ public class DefaultSubServer implements Client {
             });
         }
         holder.setAttachment(attachment);
-        holder.setTag(event);
+        holder.setTag(message);
         synchronized (sendingHandlersHolders) {
             if (getClientState() == ClientState.Running) {
                 sendingHandlersHolders.add(holder);

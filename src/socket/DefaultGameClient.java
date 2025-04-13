@@ -1,16 +1,13 @@
 package socket;
 
-import model.Game;
 import model.User;
-import socket.event.Event;
-import socket.event.StatusEvent;
+import util.socket.Message;
+import socket.event.StatusMessage;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.Queue;
@@ -63,13 +60,13 @@ public class DefaultGameClient implements GameClient {
             while (isRunning) {
                 if (inputStream.available() > 0) {
                     Object object = inputStream.readUnshared();
-                    if (!(object instanceof Event)) {
+                    if (!(object instanceof Message)) {
                         continue;
                     }
-                    Event event = (Event) object;
-                    switch (event.getType()) {
+                    Message message = (Message) object;
+                    switch (message.getType()) {
                         case StatusEvent: {
-                            setGameStatus(((StatusEvent) event).getStatus());
+                            setGameStatus(((StatusMessage) message).getStatus());
                         }
                     }
                 }

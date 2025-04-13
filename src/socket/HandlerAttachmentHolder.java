@@ -1,10 +1,10 @@
 package socket;
 
-import java.nio.channels.CompletionHandler;
+import util.socket.CompletionHandler;
 
 class HandlerAttachmentHolder<V, A, T> {
-    protected CompletionHandler<V, A> handler;
     protected A attachment;
+    protected CompletionHandler<V, A> handler;
     protected T tag;
 
     public CompletionHandler<V, A> getCompletionHandler() {
@@ -43,7 +43,7 @@ class HandlerAttachmentHolder<V, A, T> {
         this(null, null, null);
     }
 
-    public HandlerAttachmentHolder(CompletionHandler<V, A> handler, A attachment, T tag) {
+    public HandlerAttachmentHolder(A attachment, CompletionHandler<V, A> handler, T tag) {
         this.handler = handler;
         this.attachment = attachment;
         this.tag = tag;
